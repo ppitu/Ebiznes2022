@@ -1,47 +1,45 @@
-package product
+package user
 
 import (
 	"backend/database/models"
-	"strconv"
-
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
 func Get(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.NoContent(http.StatusPreconditionFailed)
+	}
 
 	db, _ := c.Get("db").(*gorm.DB)
 
-	var product models.Product
-	if err := db.First(&product, id).Error; err != nil {
+	var user models.User
+	if err := db.First(&user, id).Error; err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}
 
-	return c.JSON(http.StatusOK, product)
+	return c.JSON(http.StatusOK, user)
 }
 
 func GetAll(c echo.Context) error {
-
-	var products []models.Product
+	var users []models.User
 
 	db, _ := c.Get("db").(*gorm.DB)
 
-	err := db.Model(&models.Product{}).Find(&products)
-
-	if err.Error != nil {
-		c.NoContent(http.StatusNotFound)
+	if err := db.Model(&models.User{}).Find(&users).Error; err != nil {
+		return c.NoContent(http.StatusNotFound)
 	}
 
-	return c.JSON(http.StatusOK, products)
+	return c.JSON(http.StatusOK, users)
 }
 
 func Create(c echo.Context) error {
 	type RequestBody struct {
-		Name       string `json:"name"`
-		CategoryID uint64 `json:"category_id"`
+		Name string `json:"name"`
 	}
 
 	var body RequestBody
@@ -52,22 +50,20 @@ func Create(c echo.Context) error {
 
 	db, _ := c.Get("db").(*gorm.DB)
 
-	var category models.Category
-
-	if err := db.First(&category, body.CategoryID).Error; err != nil {
-		return c.NoContent(http.StatusNotFound)
-	}
-	product := models.Product{
-		Name:       body.Name,
-		CategoryID: body.CategoryID,
+	user := models.User{
+		Name: body.Name,
 	}
 
-	db.Create(&product)
-	return c.JSON(http.StatusOK, product)
+	db.Create(&user)
+
+	return c.JSON(http.StatusOK, user)
 }
 
 func Update(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.NoContent(http.StatusPreconditionFailed)
+	}
 
 	type RequestBody struct {
 		Name string `json:"name"`
@@ -81,16 +77,16 @@ func Update(c echo.Context) error {
 
 	db, _ := c.Get("db").(*gorm.DB)
 
-	var product models.Product
-	if err := db.First(&product, id).Error; err != nil {
+	var user models.User
+	if err := db.First(&user, id).Error; err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}
 
-	product.Name = body.Name
+	user.Name = body.Name
 
-	db.Save(&product)
+	db.Save(&user)
 
-	return c.JSON(http.StatusOK, product)
+	return c.JSON(http.StatusOK, user)
 }
 
 func Delete(c echo.Context) error {
@@ -101,13 +97,13 @@ func Delete(c echo.Context) error {
 
 	db, _ := c.Get("db").(*gorm.DB)
 
-	var product models.Product
+	var user models.User
 
-	if err := db.Where("id = ?", id).First(&product).Error; err != nil {
+	if err := db.Where("id = ?", id).First(&user).Error; err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}
 
-	db.Delete(&product)
+	db.Delete(&user)
 
 	return c.NoContent(http.StatusOK)
 }
