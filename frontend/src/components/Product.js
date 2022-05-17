@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from "react";
+import axios from "axios";
+import React, {useCallback, useEffect, useState} from "react";
 import {getProducts} from "../RestRequester";
 import Categories from "./Categories";
 
 function Products() {
     const [products, setProduct] = useState([]);
+    const [cart, setCart] = useState("");
 
     useEffect(() => {
         getProducts()
@@ -11,6 +13,18 @@ function Products() {
                 setProduct(res.data)
             })}, []
     );
+    
+    const addToCart = useCallback((id) => {
+        return async(e) => {
+            e.preventDefault()
+            console.log(id);
+            setCart(id);
+            const cart = {product_id: id};
+            axios.post(`http://localhost:1323/cart`, {
+                    product_id: id
+            })
+        }
+    });
 
     return (
         <div className="products">
@@ -18,7 +32,7 @@ function Products() {
                 {products.map((product, index) => (
                     <div key={index}>
                         <h3>{product.ID}:{product.Name}</h3>
-                        <button>Dodaj to koszyka</button>
+                        <button onClick={addToCart(product.ID)}>Dodaj to koszyka</button>
                         <Categories />
                     </div>
                 ))}

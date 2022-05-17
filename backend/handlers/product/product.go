@@ -16,7 +16,7 @@ func Get(c echo.Context) error {
 	db, _ := c.Get("db").(*gorm.DB)
 
 	var product models.Product
-	if err := db.First(&product, id).Error; err != nil {
+	if err := db.Preload("Category").First(&product, id).Error; err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}
 
@@ -29,7 +29,7 @@ func GetAll(c echo.Context) error {
 
 	db, _ := c.Get("db").(*gorm.DB)
 
-	err := db.Model(&models.Product{}).Find(&products)
+	err := db.Preload("Category").Find(&products)
 
 	if err.Error != nil {
 		c.NoContent(http.StatusNotFound)

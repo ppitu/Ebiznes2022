@@ -16,4 +16,5 @@ func Routes(g *echo.Group) {
 	user.UserRouter{}.Init(g.Group("/users"))
 	address.AddressRouter{}.Init(g.Group("/addresses"))
 	creditcard.CreditCardRouter{}.Init(g.Group("/credit_cards"))
+	CartRouter{}.Init(g.Group("/cart"))
 }

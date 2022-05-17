@@ -29,6 +29,8 @@ func main() {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Address{})
 	db.AutoMigrate(&models.CreditCard{})
+	db.AutoMigrate(&models.Cart{})
+	db.Migrator().CreateConstraint(&models.Cart{}, "Product")
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
