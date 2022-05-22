@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetAllCarts(c echo.Context) error {
+func GetAllCart(c echo.Context) error {
 	var cart []models.Cart
 
 	db, _ := c.Get("db").(*gorm.DB)
@@ -44,4 +44,12 @@ func CreateCart(c echo.Context) error {
 
 	db.Create(&cart)
 	return c.JSON(http.StatusOK, cart)
+}
+
+func DeleteAllCart(c echo.Context) error {
+	db, _ := c.Get("db").(*gorm.DB)
+
+	db.Exec("DELETE FROM carts")
+
+	return c.NoContent(http.StatusOK)
 }

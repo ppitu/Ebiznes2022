@@ -1,16 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
-
 import Products from './components/Product';
-import Cart from './components/Cart';
+import {
+  Link,
+} from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
       <Products />
-      <Cart />
+      <h2>Koszyk</h2>
+      <Link to="/cart">Koszyk</Link>
     </div>
-  );
+  )
 }
 
 export default App;

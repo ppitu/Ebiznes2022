@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { getCart } from "../RestRequester";
 
@@ -14,16 +15,28 @@ function Cart() {
             })
     },[])
 
+    const deleteCart = () => {
+        return async(e)=> {
+            e.preventDefault();
+            console.log("Test")
+            axios.delete(`http://localhost:1323/cart`)
+
+            setCart([]);
+        }
+    };
+
     return (
         <div className="cart">
+            <h1>Koszyk</h1>
             <ul>
                 {carts.map((cart, index) => (
                     <div key={index}>
-                        <h1>{cart.ProductID}</h1>
+                        <h1>{cart.Product.Name}</h1>
                         <p>Test</p>
                     </div>
                 ))}
             </ul>
+            <button onClick={deleteCart()}>Zamów</button>
         </div>
     )
 
