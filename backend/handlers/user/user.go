@@ -107,3 +107,10 @@ func Delete(c echo.Context) error {
 
 	return c.NoContent(http.StatusOK)
 }
+
+func Login(c echo.Context) error {
+	type RequestBody struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+}
