@@ -2,9 +2,12 @@ package user
 
 import (
 	"backend/database/models"
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -17,6 +20,9 @@ import (
 	"golang.org/x/oauth2/github"
 	"golang.org/x/oauth2/google"
 	"gorm.io/gorm"
+
+	"github.com/stripe/stripe-go/v72"
+	"github.com/stripe/stripe-go/v72/paymentintent"
 )
 
 func goDotEnvVariable(key string) string {
@@ -271,4 +277,74 @@ func getUserInfoGithub(state string, code string) ([]byte, error) {
 		return nil, fmt.Errorf("failed reading response body: %s", err.Error())
 	}
 	return contents, nil
+}
+
+type item struct {
+	id string
+}
+
+func calculateOrderAmount(items []item) int64 {
+	// Replace this constant with a calculation of the order's amount
+	// Calculate the order total on the server to prevent
+	// people from directly manipulating the amount on the client
+	return 1400
+}
+
+func HandleCreatePaymentIntent(c echo.Context) error {
+	stripe.Key = "sk_test_51LD9HFEAp8DjvQZDaoDyh5FaY6WJ4n4mUWIB05eSK3JiYhZosDMgu0YQByYoBGAsoeI4uu5x7i16UC1L9KFqYcQ600WTABIIip"
+
+	if c.Request().Method != "POST" {
+		//http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		return c.NoContent(http.StatusNotFound)
+	}
+
+	var req struct {
+		Items []item `json:"items"`
+	}
+
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		//http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("json.NewDecoder.Decode: %v", err)
+		return c.NoContent(http.StatusNotFound)
+	}
+
+	// Create a PaymentIntent with amount and currency
+	params := &stripe.PaymentIntentParams{
+		Amount:   stripe.Int64(calculateOrderAmount(req.Items)),
+		Currency: stripe.String(string(stripe.CurrencyEUR)),
+		AutomaticPaymentMethods: &stripe.PaymentIntentAutomaticPaymentMethodsParams{
+			Enabled: stripe.Bool(true),
+		},
+	}
+
+	pi, err := paymentintent.New(params)
+	log.Printf("pi.New: %v", pi.ClientSecret)
+
+	if err != nil {
+		//http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("pi.New: %v", err)
+		return c.NoContent(http.StatusNotFound)
+	}
+
+	writeJSON(c, struct {
+		ClientSecret string `json:"clientSecret"`
+	}{
+		ClientSecret: pi.ClientSecret,
+	})
+
+	return c.NoContent(http.StatusOK)
+}
+
+func writeJSON(c echo.Context, v interface{}) {
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(v); err != nil {
+		//http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("json.NewEncoder.Encode: %v", err)
+		return
+	}
+	c.Response().Header().Set("Content-Type", "application/json")
+	if _, err := io.Copy(c.Response(), &buf); err != nil {
+		log.Printf("io.Copy: %v", err)
+		return
+	}
 }

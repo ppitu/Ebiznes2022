@@ -13,7 +13,6 @@ function App() {
       <div className="App">
         <Header />
         <ProductsGrid />
-        <h2>Koszyk</h2>
       </div>
     </Container>
   )

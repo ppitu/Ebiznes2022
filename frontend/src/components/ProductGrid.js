@@ -18,7 +18,7 @@ const ProductsGrid = () => {
             <div className="row">
                 <div className="col-sm-8">
                     <div className="py-3">
-                        {products.length} Products
+                        <h6>Do wybory jest {products.length} produktów</h6>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-import {getCategories} from "../RestRequester";
+import { getCategories } from "../RestRequester";
 
-function Categories() {
+function Categories({ test: setCategoryId }) {
     const [categories, setCategory] = useState([]);
 
     useEffect(() => {
@@ -12,14 +12,14 @@ function Categories() {
             })
     }, []);
 
-    console.log(categories)
-
     return (
-        <select name="category">
-            {categories.map((category, index) => (
-                <option value={category.ID}>{category.Name}</option>
-            ))}
-        </select>
+        <div>
+            <select name="category" onChange={(e => setCategoryId(e.target.value))}>
+                {categories.map((category, index) => (
+                    <option value={category.ID}>{category.Name}</option>
+                ))}
+            </select>
+        </div>
     );
 
 }
