@@ -30,62 +30,7 @@ context('My Test1', () => {
 			cy.get('[class^=form-inline ]')
                 .find('a')
                 .should('have.attr', 'href')
-		})
-
-        it('Test6', () => {
-			cy.get('[class^=form-inline ]')
-                .find('a')
-                .should('have.attr', 'href')
-		})
-
-        it('Test6', () => {
-			cy.get('[class^=form-inline ]')
-                .find('a')
-                .should('have.attr', 'href')
-		})
-
-        it('Test6', () => {
-			cy.get('[class^=form-inline ]')
-                .find('a')
-                .should('have.attr', 'href')
-		})
-
-        it('Test6', () => {
-			cy.get('[class^=form-inline ]')
-                .find('a')
-                .should('have.attr', 'href')
-		})
-
-        it('Test6', () => {
-			cy.get('[class^=form-inline ]')
-                .find('a')
-                .should('have.attr', 'href')
-		})
-
-        it('Test6', () => {
-			cy.get('[class^=form-inline ]')
-                .find('a')
-                .should('have.attr', 'href')
-		})
-
-        it('Test6', () => {
-			cy.get('[class^=form-inline ]')
-                .find('a')
-                .should('have.attr', 'href')
-		})
-
-        it('Test6', () => {
-			cy.get('[class^=form-inline ]')
-                .find('a')
-                .should('have.attr', 'href')
-		})
-
-        it('Test6', () => {
-			cy.get('[class^=form-inline ]')
-                .find('a')
-                .should('have.attr', 'href')
-		})
-        
+		})      
 
     })
 
