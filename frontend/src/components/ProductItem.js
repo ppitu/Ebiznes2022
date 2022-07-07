@@ -1,8 +1,7 @@
 
-import React, {  useCallback, useEffect, useState } from 'react';
+import React, {  useCallback, useState } from 'react';
 import axios from "axios";
 import Button from 'react-bootstrap/Button';
-import Categories from "./Categories";
 import 'bootstrap/dist/css/bootstrap.css';
 
 const ProductItem = ({product}) => {

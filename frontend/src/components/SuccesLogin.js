@@ -1,13 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { getCart } from "../RestRequester";
 import {useCookies} from "react-cookie";
 import {
     Link,
   } from 'react-router-dom';
 
 function SuccesLogin() {
-    const [cookies, setCookie] = useCookies();
+    const [cookies] = useCookies();
 
     return (
         <div className="succesLogin">

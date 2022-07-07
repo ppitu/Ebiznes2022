@@ -11,7 +11,7 @@ import {
 import Cart from './components/Cart';
 import SuccesLogin from './components/SuccesLogin';
 import {CookiesProvider} from "react-cookie";
-import SignInModal from './components/SingInModel';
+import SignInModal from './components/SingInModal';
 import CreateProduct from './components/CreateProduct';
 import CreateCategory from './components/CreateCategory';
 

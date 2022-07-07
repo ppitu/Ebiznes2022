@@ -135,9 +135,8 @@ func Delete(c echo.Context) error {
 }
 
 func GenerateToken(email string) string {
-	hash, err := bcrypt.GenerateFromPassword([]byte(email), bcrypt.DefaultCost)
-	if err != nil {
-	}
+	hash, _ := bcrypt.GenerateFromPassword([]byte(email), bcrypt.DefaultCost)
+
 	fmt.Println("Hash to store:", string(hash))
 
 	return string(hash)
@@ -151,7 +150,7 @@ var githubOauthConfig *oauth2.Config
 
 var oauthState = "Random-string"
 
-const oauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
+const OAUTHGOOGLEURLAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
 
 func OauthGoogleLogin(c echo.Context) error {
 	googleOauthConfig = &oauth2.Config{

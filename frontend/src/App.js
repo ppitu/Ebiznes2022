@@ -1,9 +1,5 @@
 import './App.css';
-import SingInModel from './components/SingInModel';
-import {
-  Link,
-} from 'react-router-dom';
-import ProductsGrid from './components/ProductGrid';
+import ProductsGrid from './components/ProductsGrid';
 import { Container } from 'react-bootstrap';
 import Header from './components/Header';
 

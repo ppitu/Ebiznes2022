@@ -2,8 +2,8 @@ import axios from "axios";
 import { useEffect } from "react";
 
 
-function Payemnt() {
-    const [payment, setPayment] = useState([]);
+function Payment() {
+    const [payment] = useState([]);
 
 
     useEffect(() => {
@@ -13,4 +13,4 @@ function Payemnt() {
 
 }
 
-export default Payemnt;
+export default Payment;

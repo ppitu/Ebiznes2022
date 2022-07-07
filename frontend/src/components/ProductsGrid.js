@@ -25,7 +25,7 @@ const ProductsGrid = () => {
             <div class="row">
 
                 {
-                    products.map((product, index) => (
+                    products.map((product) => (
                         <ProductItem key={product.ID} product={product}/>
                     ))
                 }

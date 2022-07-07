@@ -15,7 +15,7 @@ function Categories({ test: setCategoryId }) {
     return (
         <div>
             <select name="category" onChange={(e => setCategoryId(e.target.value))}>
-                {categories.map((category, index) => (
+                {categories.map((category) => (
                     <option value={category.ID}>{category.Name}</option>
                 ))}
             </select>
